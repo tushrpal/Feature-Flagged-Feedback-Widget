@@ -1,0 +1,197 @@
+.container {
+  background: linear-gradient(to bottom, black, #1a1a1a, black);
+  color: white;
+  overflow: hidden;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #ec4899, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+* {
+  user-select: none;
+  /* pointer-events: none; optional if you want clicks to pass through */
+}
+
+.heroSubtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  max-width: 40rem;
+  color: #d1d5db;
+}
+
+.heroButton {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(to right, #ec4899, #a855f7);
+  border: none;
+  border-radius: 9999px;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
+  cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.heroButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(236, 72, 153, 0.6);
+}
+
+.heroGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(400px, 50vw, 800px);
+  height: clamp(400px, 50vw, 800px);
+  background: rgba(236, 72, 153, 0.2);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.4; }
+}
+
+/* Mood Visualizer */
+.moodSection {
+  padding: 4rem 1.5rem;
+  background: #1f2937;
+  text-align: center;
+}
+
+.moodTitle {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.moodCircle {
+  width: clamp(12rem, 15vw, 16rem);
+  height: clamp(12rem, 15vw, 16rem);
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Features Section */
+.featuresSection {
+  padding: 4rem 1.5rem;
+}
+
+.featuresTitle {
+  text-align: center;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.featuresGrid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .featuresGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.featureCard {
+  background: #1f2937;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(236, 72, 153, 0.1);
+  transition: box-shadow 0.2s;
+  text-align: center;
+}
+
+.featureCard:hover {
+  box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+}
+
+.featureTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.featureDesc {
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+/* CTA Section */
+.ctaSection {
+  padding: 4rem 1.5rem;
+  background: linear-gradient(to right, #ec4899, #a855f7);
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.ctaSubtitle {
+  color: #fbcfe8;
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+}
+
+.ctaButton {
+  padding: 0.75rem 2rem;
+  background: black;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 9999px;
+  transition: background 0.2s;
+}
+
+.ctaButton:hover {
+  background: #1f2937;
+}
+
+/* Footer */
+.footer {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+/* HomePage.module.css */
+
+.moodImages {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.moodImages img {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 999999px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
