@@ -1,5 +1,5 @@
 import HomePage from "./Component/Homapage/HomePage";
-import Widget from "./Component/Homapage/Widget/Widget";
+import Widget from "./Component/Widget/Widget";
 import { useEffect } from "react";
 import { useFeatureFlags } from "./context/FeatureFlagContext";
 

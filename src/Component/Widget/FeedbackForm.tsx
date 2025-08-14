@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDraftState } from "../../../hooks/useDraftState";
-import { useFeatureFlags } from "../../../context/FeatureFlagContext";
-import { submitFeedback } from "../../../api/mockApi";
+import { useDraftState } from "../../hooks/useDraftState";
+import { useFeatureFlags } from "../../context/FeatureFlagContext";
+import { submitFeedback } from "../../api/mockApi";
 
 type FormData = {
   name: string;
@@ -37,10 +37,9 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
-  } = useForm<FormData>({
-    defaultValues: draft,
-  });
+  } = useForm<FormData>({ defaultValues: draft });
 
   const handleChange = (field: keyof FormData, value: string) => {
     setDraft({ ...draft, [field]: value });
@@ -62,6 +61,12 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
   };
 
   const panelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (isExpanded) {
+      setSubmitSuccess(false);
+      setSubmitError(false);
+    }
+  }, [isExpanded]);
 
   // Focus trap + Esc support
   useEffect(() => {
@@ -131,10 +136,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
               ✅ Thank you for your feedback!
             </p>
             <button
-              onClick={() => {
-                setSubmitSuccess(false);
-                onClose();
-              }}
+              onClick={onClose}
               style={{
                 width: "100%",
                 padding: "0.75rem",
@@ -169,7 +171,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
 
             {/* Name */}
             <div style={{ marginBottom: "1rem" }}>
-              <label htmlFor="name">Name (optional)</label>
+              <label htmlFor="name">Name </label>
               <input
                 id="name"
                 placeholder="Enter your name"
@@ -193,7 +195,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
 
             {/* Email */}
             <div style={{ marginBottom: "1rem" }}>
-              <label htmlFor="email">Email (optional)</label>
+              <label htmlFor="email">Email</label>
               <input
                 id="email"
                 type="text"
@@ -208,7 +210,10 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 value={draft.email}
-                onChange={(e) => handleChange("email", e.target.value)}
+                onChange={(e) => {
+                  handleChange("email", e.target.value);
+                  setValue("email", e.target.value, { shouldValidate: true });
+                }}
                 style={{
                   width: "100%",
                   padding: "0.75rem",
@@ -247,11 +252,16 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "message-error" : undefined}
                 value={draft.message}
-                onChange={(e) =>
-                  handleChange(
-                    "message",
-                    e.target.value.slice(0, maxMessageLength)
-                  )
+                onChange={
+                  (e) => {
+                    handleChange(
+                      "message",
+                      e.target.value.slice(0, maxMessageLength)
+                    );
+                    setValue("message", e.target.value, {
+                      shouldValidate: true,
+                    });
+                  } // update RHF
                 }
                 rows={4}
                 style={{

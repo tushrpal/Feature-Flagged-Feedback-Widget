@@ -3,7 +3,7 @@ export async function fetchFeatureFlags() {
   await new Promise((r) => setTimeout(r, 500));
   return {
     emailRequired: true,
-    darkMode: true,
+    darkMode: false,
   };
 }
 
