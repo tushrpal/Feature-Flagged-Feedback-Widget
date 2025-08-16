@@ -6,7 +6,7 @@ import FullPageFeedback from "./FullPageFeedback";
 
 type WidgetMode = "collapsed" | "expanded" | "full";
 
-export default function Widget() {
+function Widget() {
   const [mode, setMode] = useState<WidgetMode>("collapsed");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -29,13 +29,14 @@ export default function Widget() {
   return (
     <>
       {/* Always render the button */}
-      <WidgetButton onWidgetClick={onWidgetClick} />
+      <WidgetButton data-testid="widget-button" onWidgetClick={onWidgetClick} />
 
       {/* AnimatePresence for the panel */}
       <AnimatePresence>
         {mode === "expanded" && (
           <motion.div
             className="feedback-panel"
+            data-testid="feedback-panel"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -62,3 +63,5 @@ export default function Widget() {
     </>
   );
 }
+
+export default Widget;

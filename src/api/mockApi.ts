@@ -9,9 +9,9 @@ export async function fetchFeatureFlags() {
 
 export async function submitFeedback(data: any) {
   await new Promise((r) => setTimeout(r, 500 + Math.random() * 1000));
-
-  // Simulate random failure 20%
-  const failed = Math.random() < 0.2;
+   console.log(data);
+  // Simulate random failure 10%
+  const failed = Math.random() < 0.1;
   if (failed) {
     throw new Error("Submission failed");
   }

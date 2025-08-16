@@ -35,10 +35,10 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     setValue,
     formState: { errors },
+    setFocus,
   } = useForm<FormData>({ defaultValues: draft });
 
   const handleChange = (field: keyof FormData, value: string) => {
@@ -52,6 +52,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
       await submitFeedback(data);
       setSubmitSuccess(true);
       reset();
+      localStorage.removeItem("feedback-draft"); // 👈 clear draft
       setDraft({ name: "", email: "", message: "", category: "Bug" });
     } catch {
       setSubmitError(true);
@@ -65,8 +66,9 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
     if (isExpanded) {
       setSubmitSuccess(false);
       setSubmitError(false);
+      setFocus("message");
     }
-  }, [isExpanded]);
+  }, [isExpanded, setFocus]);
 
   // Focus trap + Esc support
   useEffect(() => {
@@ -107,6 +109,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
     <AnimatePresence>
       <motion.div
         ref={panelRef}
+        data-testid="feedback-panel"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
@@ -129,11 +132,12 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
         {submitSuccess ? (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
+            data-testid="feedback-success"
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
           >
             <p style={{ fontSize: "1rem", marginBottom: "1rem" }}>
-              ✅ Thank you for your feedback!
+              Thank you for your feedback!
             </p>
             <button
               onClick={onClose}
@@ -158,7 +162,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
             </button>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form data-testid="feedback-form" onSubmit={handleSubmit(onSubmit)}>
             <h3
               style={{
                 fontSize: "1.75rem",
@@ -174,6 +178,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
               <label htmlFor="name">Name </label>
               <input
                 id="name"
+                data-testid="input-name"
                 placeholder="Enter your name"
                 {...register("name")}
                 value={draft.name}
@@ -199,6 +204,8 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
               <input
                 id="email"
                 type="text"
+                data-testid="input-email"
+                required={flags.emailRequired}
                 placeholder="Enter your email"
                 {...register("email", {
                   required: flags.emailRequired ? "Email is required" : false,
@@ -241,6 +248,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
               </label>
               <textarea
                 id="message"
+                data-testid="input-message"
                 placeholder="Enter your feedback"
                 {...register("message", {
                   required: "Message is required",
@@ -249,6 +257,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
                     message: `Max ${maxMessageLength} characters`,
                   },
                 })}
+                maxLength={500}
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "message-error" : undefined}
                 value={draft.message}
@@ -258,9 +267,13 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
                       "message",
                       e.target.value.slice(0, maxMessageLength)
                     );
-                    setValue("message", e.target.value, {
-                      shouldValidate: true,
-                    });
+                    setValue(
+                      "message",
+                      e.target.value.slice(0, maxMessageLength),
+                      {
+                        shouldValidate: true,
+                      }
+                    );
                   } // update RHF
                 }
                 rows={4}
@@ -289,6 +302,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
               <label htmlFor="category">Category</label>
               <select
                 id="category"
+                data-testid="select-category"
                 {...register("category")}
                 value={draft.category}
                 onChange={(e) => handleChange("category", e.target.value)}
@@ -312,9 +326,12 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
             </div>
 
             {submitError && (
-              <p style={{ color: "#f87171" }}>
-                ❌ Submission failed. Please try again.
-              </p>
+              <>
+                <p style={{ color: "#f87171" }}>Something went wrong</p>
+                <button type="button" onClick={handleSubmit(onSubmit)}>
+                  Retry
+                </button>
+              </>
             )}
 
             <div
@@ -326,6 +343,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
             >
               <button
                 type="submit"
+                data-testid="btn-submit"
                 disabled={loading}
                 style={{
                   flex: 1,
@@ -355,6 +373,7 @@ export default function FeedbackForm({ onClose, isExpanded }: Props) {
               </button>
               <button
                 type="button"
+                data-testid="btn-close"
                 onClick={onClose}
                 style={{
                   flex: 1,

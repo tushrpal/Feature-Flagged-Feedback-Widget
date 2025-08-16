@@ -1,120 +1,34 @@
-Project: Feature-Flagged Feedback Widget
+This project uses Jest for unit tests and Playwright for end-to-end tests.
 
+1. Unit Tests (Jest)
 
-Build a small, embeddable feedback widget that supports multiple display modes, persists draft state offline, and is fully tested at the unit & E2E level.
+Run all unit tests:
 
+npm run test:unit
 
----
+Run in watch mode (reruns on file changes):
 
-Functional Requirements
+npm run test:unit:watch
 
-1. Widget Display Modes
+Generate coverage report:
 
-Compact icon-only button (bottom-right corner of screen).
+npm run test:unit:coverage
 
-Expanded panel with form fields.
+The coverage report will appear in coverage/lcov-report/index.html.
+You can open it in your browser:
 
-Full-page mode (for mobile or embedding in a standalone page).
+open coverage/lcov-report/index.html
 
+2. E2E Tests (Playwright)
 
+Run all end-to-end tests:
 
-2. Form Features
+npm run test:e2e
 
-Fields: Name (optional), Email (optional), Message (required), Category (dropdown: Bug, Feature, Other).
+Run E2E tests in headed mode (see the browser as tests run):
 
-Character counter for message (max 500 chars).
+npx playwright test --headed
 
-Async submit (mock API call with 500–1500ms delay).
+Run a specific test file:
 
-Success & error states with retry option.
-
-
-
-3. Draft Persistence
-
-Save form state to localStorage on every change.
-
-Restore draft when reopening the widget.
-
-
-
-4. Feature Flags
-
-Toggle features like "Email field required" or "Dark mode" via a feature flag context.
-
-Flags fetched from a mock API at app start.
-
-
-
-5. Accessibility
-
-Keyboard navigable.
-
-Screen reader labels for all inputs.
-
-Focus trap in expanded panel.
-
-
-
-
-
----
-
-Testing Requirements
-
-Unit & Component Testing (Jest / Vitest + React Testing Library)
-
-Form validation logic (required fields, max length).
-
-Draft persistence (mock localStorage).
-
-Feature flag context behavior.
-
-State changes: collapsed → expanded → submitted.
-
-Success & error message rendering.
-
-
-E2E Testing (Playwright / Cypress)
-
-Load widget, open form, fill and submit successfully.
-
-Simulate API error → retry flow works.
-
-Draft persistence across reload.
-
-Feature flag changes affect UI (e.g., email required).
-
-Keyboard navigation & focus trap checks.
-
-
-
----
-
-Acceptance Criteria
-
-Unit tests: ≥90% coverage for components and hooks.
-
-E2E tests: Pass on Chrome and Firefox.
-
-Form can be submitted successfully and error handling works.
-
-Draft state restored after reload.
-
-Accessible (axe checks pass in tests).
-
-
-
----
-
-Deliverables
-
-React + TypeScript app (could be CRA, Vite, or Next.js).
-
-Testing setup for unit + E2E.
-
-Mock API server for flags and submit (msw or similar).
-
-README with test commands and coverage report screenshot.
-
-
+npx playwright test tests/e2e/widget.spec.ts

@@ -7,7 +7,7 @@ type Props = {
 
 export default function FullPageFeedback({ onClose }: Props) {
   return (
-    <div className="full-page-feedback">
+    <div className="full-page-feedback ">
       <FeedbackForm onClose={onClose} />
     </div>
   );

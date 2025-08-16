@@ -10,6 +10,7 @@ export default function WidgetButton({ onWidgetClick }: Props) {
     <button
       onClick={onWidgetClick}
       className="widget-button"
+      data-testid="widget-button"
       aria-label="Open feedback form"
     >
       <MessageSquareHeart />
