@@ -26,6 +26,11 @@
   width: 320px;
 }
 
+.icon-gif {
+  width: 26px; /* match icon size */
+  height: 26px;
+}
+
 .full-page-feedback {
   min-height: 100vh;
   background: #f5f5f5;
